@@ -1,0 +1,3 @@
+source links:
+  https://docs.akri.sh/demos/usb-camera-demo
+  https://github.com/project-akri/akri-docs
