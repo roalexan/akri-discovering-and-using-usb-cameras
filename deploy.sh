@@ -155,14 +155,13 @@ ret_val=$(ssh ${VM_USER_NAME}@${public_ip} -i ${KEY_NAME} -o "StrictHostKeyCheck
 node_port=$(echo $ret_val | jq -r '.["spec"]["ports"][] | select(.name == "http").nodePort')
 echo "application port: ${node_port}"
 
-## Forward local port to remote port 
-echo "forward local port"
-ssh ${VM_USER_NAME}@$public_ip -i ${KEY_NAME} -o "StrictHostKeyChecking no" -L 50000:localhost:${node_port}
-
 ## RETURN
 
-echo "you may now browse: http://localhost:50000/"
 echo "finished"
+echo "you may now see the demo by forwarding your local port:"
+echo "ssh ${VM_USER_NAME}@$public_ip -i ${KEY_NAME} -o \"StrictHostKeyChecking no\" -L 50000:localhost:${node_port}"
+echo "and browsing:"
+echo "http://localhost:50000/"
 exit 0 # success
 
 ## DELETE RESOURCE GROUP WHEN NO LONGER NEEDED
