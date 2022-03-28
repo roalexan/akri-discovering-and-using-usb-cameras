@@ -11,6 +11,7 @@
 # you should be able to browse http://localhost:50000/ and see the demo in action.
 #
 
+# estimated time for completion: 18 minutes
 echo "start deploy.sh"
 
 ## PARAMETERS
