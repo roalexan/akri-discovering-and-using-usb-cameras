@@ -3,7 +3,7 @@ on: [push]
 name: AzureLoginSample
 
 jobs:
-build-and-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Log in with Azure
