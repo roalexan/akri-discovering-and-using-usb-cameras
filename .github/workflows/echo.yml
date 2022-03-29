@@ -30,5 +30,11 @@ jobs:
         run: pwd
 
       # Runs a single command using the runners shell
+      - name: Run ls command
+        run: ls -l
+
+      # Runs a single command using the runners shell
+      # https://github.community/t/action-showing-permission-denied/134957
+      # git update-index --chmod=+x ./echo.sh
       - name: Run echo script
         run: ./echo.sh
