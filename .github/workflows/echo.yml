@@ -24,6 +24,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+        # https://github.com/actions/github-script/issues/56
         env:
           LOCATION: eastus
           PREFIX: rba2
@@ -40,4 +41,4 @@ jobs:
       # https://github.community/t/action-showing-permission-denied/134957
       # git update-index --chmod=+x ./echo.sh
       - name: Run echo script
-        run: ./echo.sh ${{ secrets.SUBSCRIPTION }} process.env.LOCATION process.env.PREFIX ${{ secrets.ALIAS }}
+        run: ./echo.sh ${{ secrets.SUBSCRIPTION }} env.LOCATION process.env.PREFIX ${{ secrets.ALIAS }}
