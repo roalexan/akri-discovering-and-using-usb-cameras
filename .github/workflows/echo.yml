@@ -1,4 +1,5 @@
 # This is a basic workflow to help you get started with Actions
+# https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
 
 name: Echo
 
@@ -12,6 +13,15 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+  # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_callinputs
+  workflow_call:
+    inputs:
+      location:
+        description: 'location used for the deployment'
+        default: 'eastus'
+        required: true
+        type: string
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -41,4 +51,4 @@ jobs:
       # https://github.community/t/action-showing-permission-denied/134957
       # git update-index --chmod=+x ./echo.sh
       - name: Run echo script
-        run: ./echo.sh ${{ secrets.SUBSCRIPTION }} env.LOCATION process.env.PREFIX ${{ secrets.ALIAS }}
+        run: ./echo.sh ${{ secrets.SUBSCRIPTION }} ${{ inputs.location }} process.env.PREFIX ${{ secrets.ALIAS }}
