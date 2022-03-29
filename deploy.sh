@@ -79,8 +79,6 @@ az configure --defaults group=${RESOURCE_GROUP}
 echo "create resource group"
 az group create -l ${LOCATION} -n ${RESOURCE_GROUP} --tags alias=${ALIAS}
 
-exit
-
 ## CREATE VM
 
 # https://docs.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-cli
