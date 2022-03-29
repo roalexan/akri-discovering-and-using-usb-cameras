@@ -37,4 +37,4 @@ jobs:
       # https://github.community/t/action-showing-permission-denied/134957
       # git update-index --chmod=+x ./echo.sh
       - name: Run echo script
-        run: ./echo.sh 1 2 3 4
+        run: ./echo.sh ${{ secrets.SUBSCRIPTION }} 2 3 4
