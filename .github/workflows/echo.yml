@@ -47,6 +47,10 @@ jobs:
       - name: Run ls command
         run: ls -l
 
+      # Runs a single echo using the runners shell
+      - name: Run echo command
+        run: echo ${LOCATION}
+
       # Runs a single command using the runners shell
       # https://github.community/t/action-showing-permission-denied/134957
       # git update-index --chmod=+x ./echo.sh
