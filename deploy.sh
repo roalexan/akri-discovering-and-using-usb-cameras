@@ -15,10 +15,10 @@ echo "start deploy.sh"
 
 ## PARAMETERS
 
-SUBSCRIPTION="" # subscription used for the deployment
+SUBSCRIPTION="edf507a2-6235-46c5-b560-fd463ba2e771" # AG-CI-AI-CANARY_ENABLED
 LOCATION="eastus" # location used for the deployment
-PREFIX="" # short string prepended to some resource names to make them unique
-ALIAS="" # used as a tag on the resource group to identity its owner
+PREFIX="rba1" # short string prepended to some resource names to make them unique
+ALIAS="roalexan" # used as a tag on the resource group to identity its owner
 
 echo "parameters:"
 echo "SUBSCRIPTION: ${SUBSCRIPTION}"
@@ -78,6 +78,8 @@ az configure --defaults group=${RESOURCE_GROUP}
 
 echo "create resource group"
 az group create -l ${LOCATION} -n ${RESOURCE_GROUP} --tags alias=${ALIAS}
+
+exit
 
 ## CREATE VM
 
