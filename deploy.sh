@@ -15,10 +15,10 @@ echo "start deploy.sh"
 
 ## PARAMETERS
 
-SUBSCRIPTION="edf507a2-6235-46c5-b560-fd463ba2e771" # AG-CI-AI-CANARY_ENABLED
-LOCATION="eastus" # location used for the deployment
-PREFIX="rba1" # short string prepended to some resource names to make them unique
-ALIAS="roalexan" # used as a tag on the resource group to identity its owner
+SUBSCRIPTION="$1" # subscription used for the deployment
+LOCATION="$2" # location used for the deployment, e.g. eastus
+PREFIX="$3" # short string prepended to some resource names to make them unique
+ALIAS="$4" # used as a tag on the resource group to identity its owner
 
 echo "parameters:"
 echo "SUBSCRIPTION: ${SUBSCRIPTION}"
