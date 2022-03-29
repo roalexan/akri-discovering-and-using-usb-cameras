@@ -55,4 +55,6 @@ jobs:
       # https://github.community/t/action-showing-permission-denied/134957
       # git update-index --chmod=+x ./echo.sh
       - name: Run echo script
-        run: ./echo.sh ${{ secrets.SUBSCRIPTION }} ${{ github.event.inputs.location }} process.env.PREFIX ${{ secrets.ALIAS }}
+        env:
+          location: eastus
+        run: ./echo.sh ${{ secrets.SUBSCRIPTION }} ${location} process.env.PREFIX ${{ secrets.ALIAS }}
