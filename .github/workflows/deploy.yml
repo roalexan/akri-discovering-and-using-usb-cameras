@@ -1,7 +1,7 @@
 # This is a basic workflow to help you get started with Actions
 # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
 
-name: Echo
+name: Deploy
 
 # Controls when the workflow will run
 on:
