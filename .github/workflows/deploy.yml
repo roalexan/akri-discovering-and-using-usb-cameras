@@ -36,13 +36,6 @@ jobs:
 
       # Runs a single command using the runners shell
       # https://github.community/t/action-showing-permission-denied/134957
-      # git update-index --chmod=+x ./echo.sh
-      - name: Run echo script
-        env:
-          LOCATION: eastus
-          PREFIX: rba2
-        run: ./echo.sh ${{ secrets.SUBSCRIPTION }} ${LOCATION} ${PREFIX} ${{ secrets.ALIAS }}
-
       - name: Log in with Azure
         uses: azure/login@v1
         with:
