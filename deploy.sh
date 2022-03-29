@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Copyright (c) Microsoft Corporation. All rights reserved.
-#
-# Licensed under Microsoft Incubation License Agreement:
+# Licensed under the MIT License.
 
 #
 # The below steps will deploy the Akri demo. It will stand up a virtual machine,
