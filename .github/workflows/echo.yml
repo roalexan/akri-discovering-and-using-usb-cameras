@@ -24,6 +24,9 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
+        env:
+          LOCATION: eastus
+          PREFIX: rba2
 
       # Runs a single command using the runners shell
       - name: Run pwd command
@@ -37,4 +40,4 @@ jobs:
       # https://github.community/t/action-showing-permission-denied/134957
       # git update-index --chmod=+x ./echo.sh
       - name: Run echo script
-        run: ./echo.sh ${{ secrets.SUBSCRIPTION }} 2 3 4
+        run: ./echo.sh ${{ secrets.SUBSCRIPTION }} process.env.LOCATION process.env.PREFIX ${{ secrets.ALIAS }}
