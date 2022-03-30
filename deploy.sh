@@ -61,7 +61,7 @@ echo "KEY_NAME: ${KEY_NAME}"
 #  options = "metadata"
 
 echo "1"
-return 1 # failure
+exit 1 # failure
 echo "2"
 exit
 
