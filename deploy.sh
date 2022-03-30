@@ -60,6 +60,11 @@ echo "KEY_NAME: ${KEY_NAME}"
 #  [automount]
 #  options = "metadata"
 
+echo "1"
+return 1 # failure
+echo "2"
+exit
+
 # create the ssh keys used by the virtual machine
 # https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys
 # https://stackoverflow.com/questions/43235179/how-to-execute-ssh-keygen-without-prompt
