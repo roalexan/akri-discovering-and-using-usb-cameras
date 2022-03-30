@@ -61,9 +61,8 @@ echo "KEY_NAME: ${KEY_NAME}"
 #  options = "metadata"
 
 echo "1"
-exit 1 # failure
+exit 0 # failure
 echo "2"
-exit
 
 # create the ssh keys used by the virtual machine
 # https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys
