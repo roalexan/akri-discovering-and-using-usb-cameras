@@ -39,6 +39,7 @@ VM_IMAGE="Canonical:0001-com-ubuntu-server-focal:20_04-lts:latest" # Ubuntu Serv
 VM_SIZE="standard_ds4_v2" # Standard DS4 v2 (8 vcpus, 28 GiB memory)
 VM_USER_NAME="azureuser" # login user name of the virtual machine
 KEY_NAME="sshkey"
+KEY_VAULT_NAME="${PREFIX}keyvault"
 
 echo "variables:"
 echo "RESOURCE_GROUP: ${RESOURCE_GROUP}"
@@ -60,10 +61,6 @@ echo "KEY_NAME: ${KEY_NAME}"
 #  [automount]
 #  options = "metadata"
 
-echo "1"
-exit 0 # failure
-echo "2"
-
 # create the ssh keys used by the virtual machine
 # https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys
 # https://stackoverflow.com/questions/43235179/how-to-execute-ssh-keygen-without-prompt
@@ -82,6 +79,13 @@ az configure --defaults group=${RESOURCE_GROUP}
 
 echo "create resource group"
 az group create -l ${LOCATION} -n ${RESOURCE_GROUP} --tags alias=${ALIAS}
+
+## CREATE KEY VAULT
+
+echo "create key vault"
+az keyvault create -n ${KEY_VAULT_NAME} -g ${RESOURCE_GROUP} -l ${LOCATION} --retention-days 7
+az keyvault secret set --vault-name ${KEY_VAULT_NAME} -n ${KEY_NAME} -f ${KEY_NAME}
+# az keyvault secret show --vault-name ${KEY_VAULT_NAME} -n ${KEY_NAME} --query value -o tsv > secret_key
 
 ## CREATE VM
 

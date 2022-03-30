@@ -1,3 +1,11 @@
 source links:
   https://docs.akri.sh/demos/usb-camera-demo
   https://github.com/project-akri/akri-docs
+
+github actions:
+  keyvault
+    https://github.com/marketplace/actions/azure-key-vault-get-secrets
+  runtime variables
+    https://microsoft.github.io/code-with-engineering-playbook/continuous-delivery/devops-provider-recipes/github-actions/runtime-variables/runtime-variables/
+  secrets
+    https://stackoverflow.com/questions/65957197/difference-between-githubs-environment-and-repository-secrets

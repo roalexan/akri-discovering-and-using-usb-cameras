@@ -43,7 +43,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run deploy script
-        env:
-          LOCATION: eastus
-          PREFIX: rba2
-        run: ./deploy.sh ${{ secrets.SUBSCRIPTION }} ${LOCATION} ${PREFIX} ${{ secrets.ALIAS }}
+        run: ./deploy.sh ${{ secrets.SUBSCRIPTION }} ${{ secrets.LOCATION }} ${{ secrets.PREFIX }} ${{ secrets.ALIAS }}
