@@ -182,13 +182,16 @@ echo "    http://localhost:50000/"
 
 echo "1"
 ssh -fN ${VM_USER_NAME}@${public_ip} -i ${KEY_NAME} -o "StrictHostKeyChecking no" -L 50000:localhost:${node_port}
+#ssh -fN ${VM_USER_NAME}@${public_ip} -i ${KEY_NAME} -o "StrictHostKeyChecking no" -L 50000:127.0.0.1:${node_port}
 sleep 5
 ps -ef | grep ${node_port}
 echo "2"
 
 #curl -v http://localhost:50000/camera_frame_feed/1 -o camera_frames.txt --max-time 1
-curl -v http://127.0.0.1:50000/camera_frame_feed/1 -o camera_frames.txt --max-time 1
+#curl -v http://127.0.0.1:50000/camera_frame_feed/1 -o camera_frames.txt --max-time 1
+curl -v http://127.0.0.1:50000/camera_frame_feed/1 -o camera_frames.txt --max-time 1 --trace-ascii dump.txt
 ls -l
+more dump.txt
 # https://stackoverflow.com/questions/4749330/how-to-test-if-string-exists-in-file-with-bash
 if ! grep -F "image/jpeg" camera_frames.txt; then
   exit 1 # failure
