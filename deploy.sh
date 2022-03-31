@@ -187,7 +187,7 @@ ssh -fN ${VM_USER_NAME}@${public_ip} -i ${KEY_NAME} -o "StrictHostKeyChecking no
 curl http://localhost:50000//camera_frame_feed/1 -o camera_frames.txt --max-time 1
 ls -l
 # https://stackoverflow.com/questions/4749330/how-to-test-if-string-exists-in-file-with-bash
-if ! grep -F "image/jpegg" camera_frames.txt; then
+if ! grep -F "image/jpeg" camera_frames.txt; then
   exit 1 # failure
 fi
 
