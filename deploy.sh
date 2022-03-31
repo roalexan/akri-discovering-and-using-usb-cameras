@@ -66,9 +66,6 @@ echo "create keys"
 ssh-keygen -q -t rsa -N '' -f ${KEY_NAME} <<< y >/dev/null 2>&1
 # https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error
 # https://stackoverflow.com/questions/4411457/how-do-i-verify-check-test-validate-my-ssh-passphrase
-ls -l
-chmod 600 ${KEY_NAME}
-ls -l
 
 ## SET AZ DEFAULTS
 
@@ -183,7 +180,11 @@ echo "    http://localhost:50000/"
 
 ## TEST
 
+echo "1"
 ssh -fN ${VM_USER_NAME}@${public_ip} -i ${KEY_NAME} -o "StrictHostKeyChecking no" -L 50000:localhost:${node_port}
+sleep 5
+echo "2"
+
 curl http://localhost:50000//camera_frame_feed/1 -o camera_frames.txt --max-time 1
 ls -l
 # https://stackoverflow.com/questions/4749330/how-to-test-if-string-exists-in-file-with-bash
