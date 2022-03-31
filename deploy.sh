@@ -183,9 +183,10 @@ echo "    http://localhost:50000/"
 echo "1"
 ssh -fN ${VM_USER_NAME}@${public_ip} -i ${KEY_NAME} -o "StrictHostKeyChecking no" -L 50000:localhost:${node_port}
 sleep 5
+ps -ef | grep ${node_port}
 echo "2"
 
-curl http://localhost:50000//camera_frame_feed/1 -o camera_frames.txt --max-time 1
+curl http://localhost:50000/camera_frame_feed/1 -o camera_frames.txt --max-time 1
 ls -l
 # https://stackoverflow.com/questions/4749330/how-to-test-if-string-exists-in-file-with-bash
 if ! grep -F "image/jpeg" camera_frames.txt; then
