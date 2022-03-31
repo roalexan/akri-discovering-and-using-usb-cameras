@@ -49,8 +49,6 @@ echo "VM_SIZE: ${VM_SIZE}"
 echo "VM_USER_NAME: ${VM_USER_NAME}"
 echo "KEY_NAME: ${KEY_NAME}"
 
-# SOURCE FILES
-
 # PREQUISITES
 
 # if using Windows Subsystem for Linux (WSL), you MIGHT need to do the below to allow
@@ -68,6 +66,9 @@ echo "create keys"
 ssh-keygen -q -t rsa -N '' -f ${KEY_NAME} <<< y >/dev/null 2>&1
 # https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error
 # https://stackoverflow.com/questions/4411457/how-do-i-verify-check-test-validate-my-ssh-passphrase
+ls -l
+chmod 600 ${KEY_NAME}
+ls -l
 
 ## SET AZ DEFAULTS
 
@@ -163,13 +164,35 @@ ret_val=$(ssh ${VM_USER_NAME}@${public_ip} -i ${KEY_NAME} -o "StrictHostKeyCheck
 node_port=$(echo $ret_val | jq -r '.["spec"]["ports"][] | select(.name == "http").nodePort')
 echo "application port: ${node_port}"
 
+## USE
+
+# https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-set-policy
+echo "finished"
+echo "you may now see the demo in action by downloading the secret key (if needed):"
+echo "    az login"
+echo "    az account set -s ${SUBSCRIPTION}"
+echo "    az configure --defaults group=${RESOURCE_GROUP}"
+# https://github.com/Azure/azure-cli/issues/21457
+echo "    az keyvault secret show --vault-name ${KEY_VAULT_NAME} -n ${KEY_NAME} --query value -o tsv | tr -d '\r' > ${KEY_NAME}"
+echo "    chmod 600 ${KEY_NAME}"
+echo "forwarding your local port:"
+# https://unix.stackexchange.com/questions/685268/ssh-tunnel-port-forwarding-in-background
+echo "    ssh -fN ${VM_USER_NAME}@${public_ip} -i ${KEY_NAME} -o \"StrictHostKeyChecking no\" -L 50000:localhost:${node_port}"
+echo "and browsing:"
+echo "    http://localhost:50000/"
+
+## TEST
+
+ssh -fN ${VM_USER_NAME}@${public_ip} -i ${KEY_NAME} -o "StrictHostKeyChecking no" -L 50000:localhost:${node_port}
+curl http://localhost:50000//camera_frame_feed/1 -o camera_frames.txt --max-time 1
+ls -l
+# https://stackoverflow.com/questions/4749330/how-to-test-if-string-exists-in-file-with-bash
+if ! grep -F "image/jpegg" camera_frames.txt; then
+  exit 1 # failure
+fi
+
 ## RETURN
 
-echo "finished"
-echo "you may now see the demo by forwarding your local port:"
-echo "ssh ${VM_USER_NAME}@$public_ip -i ${KEY_NAME} -o \"StrictHostKeyChecking no\" -L 50000:localhost:${node_port}"
-echo "and browsing:"
-echo "http://localhost:50000/"
 exit 0 # success
 
 ## DELETE RESOURCE GROUP WHEN NO LONGER NEEDED

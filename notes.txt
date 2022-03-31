@@ -9,3 +9,8 @@ github actions:
     https://microsoft.github.io/code-with-engineering-playbook/continuous-delivery/devops-provider-recipes/github-actions/runtime-variables/runtime-variables/
   secrets
     https://stackoverflow.com/questions/65957197/difference-between-githubs-environment-and-repository-secrets
+
+wsl
+  az cli
+    Az cli add additional new line into string output
+      https://github.com/Azure/azure-cli/issues/21457
