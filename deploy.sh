@@ -39,7 +39,6 @@ VM_IMAGE="Canonical:0001-com-ubuntu-server-focal:20_04-lts:latest" # Ubuntu Serv
 VM_SIZE="standard_ds4_v2" # Standard DS4 v2 (8 vcpus, 28 GiB memory)
 VM_USER_NAME="azureuser" # login user name of the virtual machine
 KEY_NAME="sshkey"
-KEY_VAULT_NAME="${PREFIX}keyvault"
 
 echo "variables:"
 echo "RESOURCE_GROUP: ${RESOURCE_GROUP}"
@@ -48,6 +47,8 @@ echo "VM_IMAGE: ${VM_IMAGE}"
 echo "VM_SIZE: ${VM_SIZE}"
 echo "VM_USER_NAME: ${VM_USER_NAME}"
 echo "KEY_NAME: ${KEY_NAME}"
+
+# SOURCE FILES
 
 # PREQUISITES
 
@@ -77,13 +78,6 @@ az configure --defaults group=${RESOURCE_GROUP}
 
 echo "create resource group"
 az group create -l ${LOCATION} -n ${RESOURCE_GROUP} --tags alias=${ALIAS}
-
-## CREATE KEY VAULT
-
-echo "create key vault"
-az keyvault create -n ${KEY_VAULT_NAME} -g ${RESOURCE_GROUP} -l ${LOCATION} --retention-days 7
-az keyvault secret set --vault-name ${KEY_VAULT_NAME} -n ${KEY_NAME} -f ${KEY_NAME}
-# az keyvault secret show --vault-name ${KEY_VAULT_NAME} -n ${KEY_NAME} --query value -o tsv > secret_key
 
 ## CREATE VM
 
@@ -161,44 +155,13 @@ ret_val=$(ssh ${VM_USER_NAME}@${public_ip} -i ${KEY_NAME} -o "StrictHostKeyCheck
 node_port=$(echo $ret_val | jq -r '.["spec"]["ports"][] | select(.name == "http").nodePort')
 echo "application port: ${node_port}"
 
-## USE
-
-# https://docs.microsoft.com/en-us/cli/azure/keyvault?view=azure-cli-latest#az-keyvault-set-policy
-echo "finished"
-echo "you may now see the demo in action by downloading the secret key (if needed):"
-echo "    az login"
-echo "    az account set -s ${SUBSCRIPTION}"
-echo "    az configure --defaults group=${RESOURCE_GROUP}"
-# https://github.com/Azure/azure-cli/issues/21457
-echo "    az keyvault secret show --vault-name ${KEY_VAULT_NAME} -n ${KEY_NAME} --query value -o tsv | tr -d '\r' > ${KEY_NAME}"
-echo "    chmod 600 ${KEY_NAME}"
-echo "forwarding your local port:"
-# https://unix.stackexchange.com/questions/685268/ssh-tunnel-port-forwarding-in-background
-echo "    ssh -fN ${VM_USER_NAME}@${public_ip} -i ${KEY_NAME} -o \"StrictHostKeyChecking no\" -L 50000:localhost:${node_port}"
-echo "and browsing:"
-echo "    http://localhost:50000/"
-
-## TEST
-
-echo "1"
-ssh -fN ${VM_USER_NAME}@${public_ip} -i ${KEY_NAME} -o "StrictHostKeyChecking no" -L 50000:localhost:${node_port}
-#ssh -fN ${VM_USER_NAME}@${public_ip} -i ${KEY_NAME} -o "StrictHostKeyChecking no" -L 50000:127.0.0.1:${node_port}
-sleep 5
-ps -ef | grep ${node_port}
-echo "2"
-
-#curl -v http://localhost:50000/camera_frame_feed/1 -o camera_frames.txt --max-time 1
-#curl -v http://127.0.0.1:50000/camera_frame_feed/1 -o camera_frames.txt --max-time 1
-curl -v http://127.0.0.1:50000/camera_frame_feed/1 -o camera_frames.txt --max-time 1 --trace-ascii dump.txt
-ls -l
-more dump.txt
-# https://stackoverflow.com/questions/4749330/how-to-test-if-string-exists-in-file-with-bash
-if ! grep -F "image/jpeg" camera_frames.txt; then
-  exit 1 # failure
-fi
-
 ## RETURN
 
+echo "finished"
+echo "you may now see the demo by forwarding your local port:"
+echo "ssh ${VM_USER_NAME}@$public_ip -i ${KEY_NAME} -o \"StrictHostKeyChecking no\" -L 50000:localhost:${node_port}"
+echo "and browsing:"
+echo "http://localhost:50000/"
 exit 0 # success
 
 ## DELETE RESOURCE GROUP WHEN NO LONGER NEEDED
